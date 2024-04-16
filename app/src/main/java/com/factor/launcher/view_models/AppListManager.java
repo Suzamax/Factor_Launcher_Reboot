@@ -41,6 +41,7 @@ public class AppListManager extends ViewModel
     private final MutableLiveData<ArrayList<UserApp>> appsMutableLiveData = new MutableLiveData<>();
 
     private final ArrayList<UserApp> userApps = new ArrayList<>();
+    private ArrayList<UserApp> userAppsBackup = new ArrayList<>();
 
     private final ArrayList<UserApp> queryApps = new ArrayList<>();
 
@@ -209,6 +210,7 @@ public class AppListManager extends ViewModel
                                     app.setIcon(r.activityInfo.loadIcon(packageManager));
 
                                 userApps.add(app);
+                                userAppsBackup.add(app);
                                 daoReference.insert(app);
                             }
                             else
@@ -225,6 +227,7 @@ public class AppListManager extends ViewModel
                                     app.setShortCuts(getShortcutsFromApp(app));
 
                                     userApps.add(app);
+                                    userAppsBackup.add(app);
 
                                     app.setPinned(factorManager.isAppPinned(app));
                                     try
@@ -272,6 +275,7 @@ public class AppListManager extends ViewModel
 
                                 app.setIcon(r.activityInfo.loadIcon(packageManager));
                                 userApps.add(app);
+                                userAppsBackup.add(app);
                             }
                         }
                         catch (PackageManager.NameNotFoundException | NullPointerException ex)
@@ -430,6 +434,7 @@ public class AppListManager extends ViewModel
                     app.setLabelNew(app.getLabelOld());
                     daoReference.insert(app);
                     userApps.add(app);
+                    userAppsBackup.add(app);
                     try
                     {
                         userApps.sort(first_letter);
@@ -570,10 +575,12 @@ public class AppListManager extends ViewModel
                     return LinearSmoothScroller.SNAP_TO_START;
                 }
             };
-            ArrayList<UserApp> copyList = new ArrayList<>(userApps);
-            for (UserApp a : copyList)
+            ArrayList<UserApp> copyList = new ArrayList<>(userAppsBackup);
+            if(!newText.isEmpty())
+                copyList.removeIf(a -> !a.getLabelNew().toLowerCase().contains(newText.toLowerCase()));
+            /*for (UserApp a : copyList)
             {
-                if (a.getSearchReference().contains(newText.toLowerCase()))
+                if (a.getLabelNew().startsWith(newText.toLowerCase()))
                 {
                     smoothScroller.setTargetPosition(copyList.indexOf(a));
                     rc.getLayoutManager().startSmoothScroll(smoothScroller);
@@ -581,7 +588,14 @@ public class AppListManager extends ViewModel
                 }
             }
             smoothScroller.setTargetPosition(0);
-            rc.getLayoutManager().startSmoothScroll(smoothScroller);
+            rc.getLayoutManager().startSmoothScroll(smoothScroller);*/
+
+            userApps.clear();
+            userApps.addAll(copyList);
+
+            if (adapter!=null && getActivity() != null) {
+                getActivity().runOnUiThread(adapter::notifyDataSetChanged);
+            }
         }
 
     }
