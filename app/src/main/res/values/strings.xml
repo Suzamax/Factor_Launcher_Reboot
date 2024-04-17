@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Factor Launcher</string>
+    <string name="app_name" translatable="false">Factor Launcher</string>
     <string name="add_to_home">Add to home</string>
     <string name="edit">Edit</string>
     <string name="info">Info</string>
@@ -51,7 +51,7 @@
     <string name="tile_color">Tile color value</string>
     <string name="choose">Palette</string>
     <string name="search_bar_color">Search bar color value</string>
-    <string name="color_value_hint">FFFFFF</string>
+    <string name="color_value_hint" translatable="false">FFFFFF</string>
     <string name="granted">Granted</string>
     <string name="blur_effect_missing_permission">Requires storage access</string>
     <string name="storage_permission_rationale">Factor launcher needs to access your external storage</string>
