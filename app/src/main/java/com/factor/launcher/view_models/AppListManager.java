@@ -592,6 +592,7 @@ public class AppListManager extends ViewModel
 
             userApps.clear();
             userApps.addAll(copyList);
+            userApps.sort(first_letter);
 
             if (adapter!=null && getActivity() != null) {
                 getActivity().runOnUiThread(adapter::notifyDataSetChanged);
