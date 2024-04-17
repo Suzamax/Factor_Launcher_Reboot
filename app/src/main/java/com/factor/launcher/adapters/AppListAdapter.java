@@ -21,6 +21,7 @@ import com.factor.launcher.R;
 import com.factor.launcher.databinding.AppListItemBinding;
 import com.factor.launcher.models.AppSettings;
 import com.factor.launcher.models.AppShortcut;
+import com.factor.launcher.util.AppIconHelperV26;
 import com.factor.launcher.util.Util;
 import com.factor.launcher.view_models.AppListManager;
 import com.factor.launcher.models.NotificationHolder;
@@ -535,8 +536,16 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppListV
         {
             try
             {
-                if (appListAdapter.appListManager.packageManager.getApplicationInfo(app.getPackageName(), 0).enabled)
-                    app.setIcon(appListAdapter.appListManager.packageManager.getApplicationIcon(app.getPackageName()));
+                if (appListAdapter.appListManager.packageManager.getApplicationInfo(app.getPackageName(), 0).enabled){
+                    if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                        app.setIcon(AppIconHelperV26.getAppIcon(appListAdapter.appListManager.packageManager, app.getPackageName()));
+                    }
+                    else{
+                        app.setIcon(appListAdapter.appListManager.packageManager.getApplicationIcon(app.getPackageName()));
+                    }
+
+                }
+
             }
             catch (PackageManager.NameNotFoundException e)
             {
