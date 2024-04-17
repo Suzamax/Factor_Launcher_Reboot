@@ -11,6 +11,8 @@ import androidx.room.Entity
 import androidx.room.Ignore
 
 import androidx.room.PrimaryKey
+import com.factor.launcher.FactorApplication
+import com.factor.launcher.R
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -151,7 +153,7 @@ open class UserApp
                 text
         }
         else
-            "You are all caught up"
+            FactorApplication.context.getString(R.string.you_are_all_caught_up)
     }
 
     fun getNotificationText() : String
@@ -160,11 +162,11 @@ open class UserApp
         {
             val text = currentNotifications.last().text
             if (text == "null" || text == "Null" || text.isEmpty())
-                "Notification from $labelNew"
+                FactorApplication.context.getString(R.string.notification_from, labelNew)
             else
                 text
         } else
-            "No notification"
+            FactorApplication.context.getString(R.string.no_notification)
     }
 
 
