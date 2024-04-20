@@ -18,6 +18,7 @@ import com.factor.launcher.R;
 import com.factor.launcher.databinding.FactorLargeBinding;
 import com.factor.launcher.databinding.FactorMediumBinding;
 import com.factor.launcher.databinding.FactorSmallBinding;
+import com.factor.launcher.databinding.FactorWidget2Binding;
 import com.factor.launcher.models.AppSettings;
 import com.factor.launcher.models.Factor;
 import com.factor.launcher.models.NotificationHolder;
@@ -40,7 +41,7 @@ public class FactorsAdapter extends BouncyRecyclerView.Adapter<FactorsAdapter.Fa
 
     private final boolean isLiveWallpaper;
 
-    private ArrayList<Factor> userFactors;
+    public ArrayList<Factor> userFactors;
 
     private ViewGroup background;
 
@@ -101,6 +102,9 @@ public class FactorsAdapter extends BouncyRecyclerView.Adapter<FactorsAdapter.Fa
             case Factor.Size.LARGE:
                 id = R.layout.factor_large;
                 break;
+            case Factor.Size.WIDGET:
+                id = R.layout.factor_widget2;
+                break;
 
         }
 
@@ -123,6 +127,7 @@ public class FactorsAdapter extends BouncyRecyclerView.Adapter<FactorsAdapter.Fa
                 layoutParams.width = scale;
                 break;
             case Factor.Size.LARGE:
+            case Factor.Size.WIDGET:
                 layoutParams.width = scale;
                 layoutParams.height = scale;
                 break;
@@ -151,6 +156,11 @@ public class FactorsAdapter extends BouncyRecyclerView.Adapter<FactorsAdapter.Fa
             ((FactorLargeBinding) binding).tile.setupTile(appSettings, isLiveWallpaper, background);
         }
 
+        if (binding instanceof FactorWidget2Binding)
+        {
+            ((FactorWidget2Binding) binding).tile.setupTile(appSettings, isLiveWallpaper, background);
+        }
+
         //create context menu
         view.setOnCreateContextMenuListener((menu, v, menuInfo) ->
         {
@@ -159,14 +169,19 @@ public class FactorsAdapter extends BouncyRecyclerView.Adapter<FactorsAdapter.Fa
                 selectedFactor = ((FactorLargeBinding) binding).getFactor();
             else if (binding instanceof FactorMediumBinding)
                 selectedFactor = ((FactorMediumBinding) binding).getFactor();
-            else
+            else if(binding instanceof FactorSmallBinding)
             {
-                //noinspection ConstantConditions
                 selectedFactor = ((FactorSmallBinding) binding).getFactor();
+            }
+            else if(binding instanceof FactorWidget2Binding)
+            {
+                selectedFactor = ((FactorWidget2Binding) binding).getFactor();
+            } else {
+                selectedFactor = null;
             }
 
 
-            if (!selectedFactor.getPackageName().isEmpty())
+            if (!selectedFactor.getPackageName().isEmpty() && !selectedFactor.getLabelNew().equals("<WIDGET>"))
             {
                 MenuInflater inflater = activity.getMenuInflater();
                 inflater.inflate(R.menu.factor_item_menu, menu);
@@ -210,6 +225,13 @@ public class FactorsAdapter extends BouncyRecyclerView.Adapter<FactorsAdapter.Fa
                         break;
                 }
             }
+            else if(!selectedFactor.getPackageName().isEmpty() && selectedFactor.getLabelNew().equals("<WIDGET>")){
+                MenuInflater inflater = activity.getMenuInflater();
+                inflater.inflate(R.menu.factor_item_menu, menu);
+
+                //remove from home
+                menu.getItem(0).setOnMenuItemClickListener(item -> removeFactorBroadcast(selectedFactor));
+            }
 
         });
 
@@ -249,6 +271,11 @@ public class FactorsAdapter extends BouncyRecyclerView.Adapter<FactorsAdapter.Fa
                 else if (userFactors.get(position).getSize() == Factor.Size.LARGE)
                 {
                     FactorLargeBinding tileBinding = (FactorLargeBinding) binding;
+                    tileBinding.tile.setupContent(factorToChange);
+                }
+                else if (userFactors.get(position).getSize() == Factor.Size.WIDGET)
+                {
+                    FactorWidget2Binding tileBinding = (FactorWidget2Binding) binding;
                     tileBinding.tile.setupContent(factorToChange);
                 }
             }
@@ -428,13 +455,22 @@ public class FactorsAdapter extends BouncyRecyclerView.Adapter<FactorsAdapter.Fa
 
                     break;
 
-
                 case Factor.Size.LARGE:
 
                     ((FactorLargeBinding) binding).setFactor(factor);
                     if (factor.getIcon() == null)
                         factorManager.loadIcon(factor);
                     ((FactorLargeBinding) binding).tile.setupContent(factor);
+                    break;
+
+                case Factor.Size.WIDGET:
+
+                    ((FactorWidget2Binding) binding).setFactor(factor);
+
+                    if (factor.getIcon() == null)
+                        factorManager.loadIcon(factor);
+                    ((FactorWidget2Binding) binding).tile.setupContent(factor);
+
                     break;
             }
 
@@ -464,6 +500,10 @@ public class FactorsAdapter extends BouncyRecyclerView.Adapter<FactorsAdapter.Fa
             else if (size == Factor.Size.LARGE)
             {
                 return ((FactorLargeBinding)binding).getFactor();
+            }
+            else if (size == Factor.Size.WIDGET)
+            {
+                return ((FactorWidget2Binding)binding).getFactor();
             }
             else
                 return new Factor();

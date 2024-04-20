@@ -55,6 +55,7 @@ import com.factor.launcher.FactorApplication;
 import com.factor.launcher.R;
 import com.factor.launcher.activities.SettingsActivity;
 import com.factor.launcher.adapters.FactorsAdapter;
+import com.factor.launcher.database.FactorsDatabase;
 import com.factor.launcher.databinding.FactorLargeBinding;
 import com.factor.launcher.databinding.FactorMediumBinding;
 import com.factor.launcher.databinding.FactorSmallBinding;
@@ -378,6 +379,8 @@ public class HomeScreenFragment extends Fragment implements OnSystemActionsCallB
         //get system wallpaper
         //***************************************************************************************************************************************************
         checkLiveWallpaper();
+
+
 
 
         //initialize data manager
@@ -781,13 +784,7 @@ public class HomeScreenFragment extends Fragment implements OnSystemActionsCallB
 
         widgetResultLauncher = registerForActivityResult(widgetActivityResultContract, this::handleWidgetResult);
 
-        SharedPreferences p = requireActivity().getSharedPreferences("factor_widget", Context.MODE_PRIVATE);
-        appWidgetId = p.getInt("widget_key", -1);
-        if (appWidgetId != -1)
-        {
-            //add widget
-            addWidgetView(appWidgetId);
-        }
+
 
         binding.addWidgetText.setOnClickListener(v -> launchPickWidgetIntent());
         binding.arrowButton.setOnLongClickListener(v ->
@@ -994,31 +991,21 @@ public class HomeScreenFragment extends Fragment implements OnSystemActionsCallB
 
     private void addWidgetView(int id)
     {
-        if (getContext() == null)
-            return;
 
-        AppWidgetProviderInfo appWidgetInfo = FactorApplication.getAppWidgetManager().getAppWidgetInfo(id);
-        if (!FactorApplication.getAppWidgetManager().bindAppWidgetIdIfAllowed(appWidgetId, appWidgetInfo.provider))
+        FactorsDatabase.FactorsDao daoReference = FactorsDatabase.Companion.getInstance(FactorApplication.context).factorsDao();
+        Factor factor = new Factor();
+        factor.setLabelNew("<WIDGET>");
+        factor.setPackageName(String.valueOf(id));
+        factor.setSize(Factor.Size.WIDGET);
+        new Thread(()->
         {
-            //requestBindWidget(appWidgetId, appWidgetInfo);
-        }
-        AppWidgetHostView hostView = FactorApplication
-                .getAppWidgetHost()
-                .createView(requireActivity().getApplicationContext(), id, appWidgetInfo);
-        hostView.setAppWidget(id, appWidgetInfo);
-        // add widget
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.MATCH_PARENT);
+            daoReference.insert(factor);
+        }).start();;
 
-        params.setMargins(
-                (int) Util.dpToPx(10, getContext()),
-                (int) Util.dpToPx(30, getContext()),
-                (int) Util.dpToPx(10, getContext()),
-                (int) Util.dpToPx(10, getContext()));
-        hostView.setLayoutParams(params);
-        binding.widgetBase.addView(hostView);
-        binding.widgetBaseShadow.setVisibility(View.GONE);
+        appListManager.getFactorManager().reloadFactors();
+
+
+        //binding.widgetBaseShadow.setVisibility(View.GONE);
     }
 
     //todo: this does not affect the binding process

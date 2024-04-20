@@ -229,13 +229,15 @@ public class AppListManager extends ViewModel
                                     userApps.add(app);
                                     userAppsBackup.add(app);
 
-                                    app.setPinned(factorManager.isAppPinned(app));
                                     try
                                     {
+                                        app.setPinned(factorManager.isAppPinned(app));
                                         userApps.sort(first_letter);
                                     }
                                     catch (ConcurrentModificationException ignored){}
+                                    catch (Exception e){}
                                     }
+
                                 else
                                     daoReference.delete(app);
                             }
@@ -643,9 +645,15 @@ public class AppListManager extends ViewModel
             {
                 for (ShortcutInfo info : s)
                 {
-                    Drawable icon = factorManager.launcherApps.getShortcutIconDrawable(info, getActivity().getResources().getDisplayMetrics().densityDpi);
-                    View.OnClickListener listener = v -> launcherApps.startShortcut(info.getPackage(), info.getId(), null, null, Process.myUserHandle());
-                    shortcuts.add(new AppShortcut(!info.isDynamic(), info.getRank(), info.getShortLabel(), icon, listener));
+                    try{
+                        Drawable icon = factorManager.launcherApps.getShortcutIconDrawable(info, getActivity().getResources().getDisplayMetrics().densityDpi);
+                        View.OnClickListener listener = v -> launcherApps.startShortcut(info.getPackage(), info.getId(), null, null, Process.myUserHandle());
+                        shortcuts.add(new AppShortcut(!info.isDynamic(), info.getRank(), info.getShortLabel(), icon, listener));
+                    }
+                    catch (Exception e){
+
+                    }
+
                 }
             }
             Collections.sort(shortcuts);

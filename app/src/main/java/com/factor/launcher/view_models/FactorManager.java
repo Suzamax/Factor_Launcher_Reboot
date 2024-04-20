@@ -1,7 +1,9 @@
 package com.factor.launcher.view_models;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.factor.launcher.FactorApplication;
 import com.factor.launcher.adapters.FactorsAdapter;
 import com.factor.launcher.database.FactorsDatabase;
 import com.factor.launcher.models.AppSettings;
@@ -80,6 +84,12 @@ public class FactorManager extends ViewModel
         return this.factorMutableLiveData;
     }
 
+    public void reloadFactors()
+    {
+        userFactors.clear();
+        loadFactors();
+    }
+
     //load factors from db
     private void loadFactors()
     {
@@ -88,13 +98,36 @@ public class FactorManager extends ViewModel
             userFactors.addAll(daoReference.getAll());
             for (Factor f: userFactors)
             {
-                loadIcon(f);
+                if(!f.getLabelNew().equals("<WIDGET>"))
+                    loadIcon(f);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
                     f.setShortcuts(getShortcutsFromFactor(f));
 
             }
+            SharedPreferences p = FactorApplication.context.getSharedPreferences("factor_widget", Context.MODE_PRIVATE);
+            int appWidgetId = p.getInt("widget_key", -1);
+            if (appWidgetId != -1 && false)
+            {
+                //add widget
+                addWidgetView(appWidgetId);
+            }
             adapter.activity.runOnUiThread(adapter::notifyDataSetChanged);
         }).start();
+    }
+
+    private void addWidgetView(int id)
+    {
+
+
+        Factor factor = new Factor();
+        factor.setLabelNew("<WIDGET>");
+        factor.setPackageName(String.valueOf(id));
+        factor.setSize(Factor.Size.WIDGET);
+
+        appListManager.getFactorManager().adapter.userFactors.add(factor);
+
+
+        //binding.widgetBaseShadow.setVisibility(View.GONE);
     }
 
     //add recently used app

@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey
 @Entity
 class Factor
 {
+
     @PrimaryKey
     var packageName: String = ""
 
@@ -62,5 +63,6 @@ class Factor
         const val SMALL : Int = 1
         const val MEDIUM : Int = 2
         const val LARGE : Int = 3
+        const val WIDGET : Int = 4
     }
 }
