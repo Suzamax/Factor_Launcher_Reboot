@@ -22,6 +22,7 @@ import com.factor.launcher.fragments.HomeScreenFragment;
 import com.factor.launcher.models.AppSettings;
 import com.factor.launcher.models.AppShortcut;
 import com.factor.launcher.models.UserApp;
+import com.factor.launcher.util.AppIconHelperV26;
 import com.factor.launcher.util.ChineseHelper;
 import com.factor.launcher.util.IconPackManager;
 
@@ -206,8 +207,15 @@ public class AppListManager extends ViewModel
                                 {
                                     app.setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), r.activityInfo.loadIcon(packageManager)));
                                 }
-                                else
-                                    app.setIcon(r.activityInfo.loadIcon(packageManager));
+                                else{
+                                    if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                                        app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
+                                    }
+                                    else{
+                                        app.setIcon(r.activityInfo.loadIcon(packageManager));
+                                    }
+                                }
+
 
                                 userApps.add(app);
                                 userAppsBackup.add(app);
@@ -221,8 +229,15 @@ public class AppListManager extends ViewModel
                                     {
                                         app.setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), r.activityInfo.loadIcon(packageManager)));
                                     }
-                                    else
-                                        app.setIcon(r.activityInfo.loadIcon(packageManager));
+                                    else{
+                                        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S){
+                                            app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
+                                        }
+                                        else{
+                                            app.setIcon(r.activityInfo.loadIcon(packageManager));
+                                        }
+                                    }
+
 
                                     app.setShortCuts(getShortcutsFromApp(app));
 
@@ -275,7 +290,12 @@ public class AppListManager extends ViewModel
 
                                 app.setShortCuts(getShortcutsFromApp(app));
 
-                                app.setIcon(r.activityInfo.loadIcon(packageManager));
+                                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S){
+                                    app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
+                                }
+                                else{
+                                    app.setIcon(r.activityInfo.loadIcon(packageManager));
+                                }
                                 userApps.add(app);
                                 userAppsBackup.add(app);
                             }
@@ -426,8 +446,15 @@ public class AppListManager extends ViewModel
                     {
                         app.setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), packageManager.getApplicationIcon(app.getPackageName())));
                     }
-                    else
-                        app.setIcon(packageManager.getApplicationIcon(app.getPackageName()));
+                    else{
+                        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                            app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
+                        }
+                        else{
+                            app.setIcon(packageManager.getApplicationIcon(app.getPackageName()));
+                        }
+                    }
+
 
                     app.setLabelOld((String) packageManager.getApplicationLabel(info));
 
@@ -488,8 +515,15 @@ public class AppListManager extends ViewModel
                             {
                                 userApps.get(position).setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), packageManager.getApplicationIcon(app.getPackageName())));
                             }
-                            else
-                                userApps.get(position).setIcon(packageManager.getApplicationIcon(app.getPackageName()));
+                            else{
+                                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                                    app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
+                                }
+                                else{
+                                    userApps.get(position).setIcon(packageManager.getApplicationIcon(app.getPackageName()));
+                                }
+                            }
+
 
 
                             userApps.get(position).setLabelOld((String) packageManager.getApplicationLabel(info));
