@@ -6,7 +6,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.factor.launcher.models.AppSettings
 
-@Database(entities = [AppSettings::class], exportSchema = false, version = 4)
+@Database(entities = [AppSettings::class], exportSchema = false, version = 5)
 abstract class AppSettingsDatabase : RoomDatabase()
 {
     abstract fun appSettingsDao(): AppSettingsDao

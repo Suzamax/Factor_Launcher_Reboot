@@ -266,6 +266,8 @@ public class SettingsFragment extends Fragment implements LifecycleOwner
             v.performHapticFeedback(HapticFeedbackConstants.CONFIRM, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
         });
 
+        binding.adaptiveIconsToggle.setChecked(settings.getAdaptiveIcons());
+
         binding.darkTextToggle.setChecked(settings.isDarkText());
         binding.darkTextToggle.setOnClickListener(v ->
         {
@@ -458,6 +460,7 @@ public class SettingsFragment extends Fragment implements LifecycleOwner
             updated.setDarkText(binding.darkTextToggle.isChecked());
             updated.setShowShadowAroundIcon(binding.iconShadowToggle.isChecked());
             updated.setStaticBlur(binding.staticBlurToggle.isChecked());
+            updated.setAdaptiveIcons(binding.adaptiveIconsToggle.isChecked());
 
             //sliders
             updated.setBlurRadius((int) binding.blurRadiusSlider.getValue());
@@ -494,6 +497,7 @@ public class SettingsFragment extends Fragment implements LifecycleOwner
                 !searchColor.equals(settings.getSearchBarColor()) ||
                 binding.iconShadowToggle.isChecked() != settings.getShowShadowAroundIcon() ||
                 binding.staticBlurToggle.isChecked() != settings.getStaticBlur() ||
+                binding.adaptiveIconsToggle.isChecked() != settings.getAdaptiveIcons() ||
                 !iconPack.equals(settings.getIconPackPackageName());
     }
 

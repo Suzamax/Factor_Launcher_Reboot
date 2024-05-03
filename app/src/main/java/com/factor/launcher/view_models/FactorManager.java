@@ -25,6 +25,7 @@ import com.factor.launcher.models.AppShortcut;
 import com.factor.launcher.models.Factor;
 import com.factor.launcher.models.UserApp;
 import com.factor.launcher.models.Payload;
+import com.factor.launcher.util.AppIconHelperV26;
 import com.factor.launcher.util.IconPackManager;
 
 import java.util.ArrayList;
@@ -146,6 +147,10 @@ public class FactorManager extends ViewModel
     public void addToHome(UserApp app)
     {
         Factor factor = app.toFactor();
+        insertFactor(factor);
+    }
+
+    public void insertFactor(Factor factor){
         userFactors.add(factor);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1)
@@ -164,6 +169,9 @@ public class FactorManager extends ViewModel
     //remove factor from home
     public void removeFromHome(Factor factor)
     {
+        if(factor.getSize() == Factor.Size.WIDGET){
+
+        }
         new Thread(() ->
         {
             userFactors.remove(factor);
@@ -171,6 +179,7 @@ public class FactorManager extends ViewModel
             adapter.activity.runOnUiThread(adapter::notifyDataSetChanged);
             updateOrders();
         }).start();
+
     }
 
     //check if the app is added to home
@@ -290,11 +299,11 @@ public class FactorManager extends ViewModel
                 // todo: fallback to bitmap icon
                 if (iconPack != null)
                 {
-                    icon = iconPack.getDrawableIconForPackage(factor.getPackageName(), packageManager.getApplicationIcon(factor.getPackageName()));
+                    icon = iconPack.getDrawableIconForPackage(factor.getPackageName(), AppIconHelperV26.getAppIcon(packageManager, factor.getPackageName()));
                 }
 
                 if (icon == null)
-                    icon = appListManager.packageManager.getApplicationIcon(factor.getPackageName());
+                    icon = AppIconHelperV26.getAppIcon(packageManager, factor.getPackageName());
 
 
                 factor.setIcon(icon);

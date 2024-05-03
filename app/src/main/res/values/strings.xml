@@ -80,4 +80,5 @@
     <string name="no_notification">No notification</string>
     <string name="notification_from">Notification from %1$s</string>
     <string name="tap_to_add_a_widget">Tap to add a widget</string>
+    <string name="adaptive_icons">Use themed app icons (Android 13+)</string>
 </resources>

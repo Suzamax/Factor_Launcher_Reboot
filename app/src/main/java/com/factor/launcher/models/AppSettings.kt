@@ -47,6 +47,9 @@ class AppSettings
     @ColumnInfo(name = "static_blur")
     var staticBlur = false
 
+    @ColumnInfo(name = "adaptive_icons")
+    var adaptiveIcons = false
+
     @ColumnInfo(name = "icon_pack")
     var iconPackPackageName = ""
 

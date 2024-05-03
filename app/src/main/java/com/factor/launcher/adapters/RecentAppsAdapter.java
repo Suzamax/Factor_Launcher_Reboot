@@ -14,6 +14,7 @@ import com.factor.launcher.R;
 import com.factor.launcher.databinding.ItemRecentAppsBinding;
 import com.factor.launcher.models.UserApp;
 import com.factor.launcher.receivers.AppActionReceiver;
+import com.factor.launcher.util.AppIconHelperV26;
 import com.factor.launcher.util.Constants;
 import com.factor.launcher.view_models.AppListManager;
 
@@ -86,14 +87,14 @@ public class RecentAppsAdapter extends RecyclerView.Adapter<RecentAppsAdapter.Re
             {
                 Drawable icon;
                 if (appListManager.getIconPack() != null)
-                    icon = appListManager.getIconPack().getDrawableIconForPackage(name, appListManager.packageManager.getApplicationIcon(name));
+                    icon = appListManager.getIconPack().getDrawableIconForPackage(name, AppIconHelperV26.getAppIcon(appListManager.packageManager, name));
                 else
-                    icon = appListManager.packageManager.getApplicationIcon(name);
+                    icon = AppIconHelperV26.getAppIcon(appListManager.packageManager, name);
 
                 binding.recentIcon.setImageDrawable(icon);
                 binding.recentIcon.setElevationDp(appListManager.settings.getShowShadowAroundIcon()? 30 : 0);
             }
-            catch (PackageManager.NameNotFoundException ignored){}
+            catch (Exception ignored){}
 
             binding.recentIcon.setOnClickListener(v ->
             {

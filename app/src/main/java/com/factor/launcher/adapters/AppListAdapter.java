@@ -537,13 +537,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.AppListV
             try
             {
                 if (appListAdapter.appListManager.packageManager.getApplicationInfo(app.getPackageName(), 0).enabled){
-                    if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
-                        app.setIcon(AppIconHelperV26.getAppIcon(appListAdapter.appListManager.packageManager, app.getPackageName()));
-                    }
-                    else{
-                        app.setIcon(appListAdapter.appListManager.packageManager.getApplicationIcon(app.getPackageName()));
-                    }
-
+                    app.setIcon(AppIconHelperV26.getAppIcon(appListAdapter.appListManager.packageManager, app.getPackageName()));
                 }
 
             }

@@ -380,9 +380,6 @@ public class HomeScreenFragment extends Fragment implements OnSystemActionsCallB
         //***************************************************************************************************************************************************
         checkLiveWallpaper();
 
-
-
-
         //initialize data manager
         //***************************************************************************************************************************************************
         appListManager = new AppListManager(this, binding.backgroundHost, isLiveWallpaper, appSettings);
@@ -997,12 +994,9 @@ public class HomeScreenFragment extends Fragment implements OnSystemActionsCallB
         factor.setLabelNew("<WIDGET>");
         factor.setPackageName(String.valueOf(id));
         factor.setSize(Factor.Size.WIDGET);
-        new Thread(()->
-        {
-            daoReference.insert(factor);
-        }).start();;
 
-        appListManager.getFactorManager().reloadFactors();
+
+        appListManager.getFactorManager().insertFactor(factor);
 
 
         //binding.widgetBaseShadow.setVisibility(View.GONE);

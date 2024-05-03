@@ -23,6 +23,8 @@ public class FactorApplication extends Application
 
     public static Context context;
 
+    public static Application application;
+
     @Override
     public void onCreate()
     {
@@ -36,6 +38,8 @@ public class FactorApplication extends Application
         appWidgetHost = new AppWidgetHost(getApplicationContext(), Constants.WIDGET_HOST_ID);
         //appWidgetHost.startListening();
         context = this.getApplicationContext();
+
+        application = this;
     }
 
     @Override

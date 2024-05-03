@@ -208,12 +208,7 @@ public class AppListManager extends ViewModel
                                     app.setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), r.activityInfo.loadIcon(packageManager)));
                                 }
                                 else{
-                                    if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
-                                        app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
-                                    }
-                                    else{
-                                        app.setIcon(r.activityInfo.loadIcon(packageManager));
-                                    }
+                                    app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
                                 }
 
 
@@ -230,12 +225,7 @@ public class AppListManager extends ViewModel
                                         app.setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), r.activityInfo.loadIcon(packageManager)));
                                     }
                                     else{
-                                        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S){
-                                            app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
-                                        }
-                                        else{
-                                            app.setIcon(r.activityInfo.loadIcon(packageManager));
-                                        }
+                                        app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
                                     }
 
 
@@ -290,12 +280,7 @@ public class AppListManager extends ViewModel
 
                                 app.setShortCuts(getShortcutsFromApp(app));
 
-                                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S){
-                                    app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
-                                }
-                                else{
-                                    app.setIcon(r.activityInfo.loadIcon(packageManager));
-                                }
+                                app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
                                 userApps.add(app);
                                 userAppsBackup.add(app);
                             }
@@ -444,15 +429,10 @@ public class AppListManager extends ViewModel
                     ApplicationInfo info = packageManager.getApplicationInfo(app.getPackageName(), 0);
                     if (iconPack != null)
                     {
-                        app.setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), packageManager.getApplicationIcon(app.getPackageName())));
+                        app.setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), AppIconHelperV26.getAppIcon(packageManager, app.getPackageName())));
                     }
                     else{
-                        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
-                            app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
-                        }
-                        else{
-                            app.setIcon(packageManager.getApplicationIcon(app.getPackageName()));
-                        }
+                        app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
                     }
 
 
@@ -513,15 +493,10 @@ public class AppListManager extends ViewModel
 
                             if (iconPack != null)
                             {
-                                userApps.get(position).setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), packageManager.getApplicationIcon(app.getPackageName())));
+                                userApps.get(position).setIcon(iconPack.getDrawableIconForPackage(app.getPackageName(), AppIconHelperV26.getAppIcon(packageManager, app.getPackageName())));
                             }
                             else{
-                                if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
-                                    app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
-                                }
-                                else{
-                                    userApps.get(position).setIcon(packageManager.getApplicationIcon(app.getPackageName()));
-                                }
+                                app.setIcon(AppIconHelperV26.getAppIcon(packageManager, app.getPackageName()));
                             }
 
 
