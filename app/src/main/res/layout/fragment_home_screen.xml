@@ -121,36 +121,56 @@
                 android:focusableInTouchMode="true"
                 android:focusable="false"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
             <!--blurred wallpaper-->
             <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/blur"
                     android:translationZ="-10dp"
                     android:alpha="0"
-                    android:scaleType="matrix"
+                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
             <!--static blurred wallpaper for tile list-->
             <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/blur_tile_static"
                     android:translationZ="-15dp"
                     android:alpha="0"
-                    android:scaleType="matrix"
+                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
             <!--wallpaper-->
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/background_host"
                     android:translationZ="-20dp"
                     android:backgroundTint="@color/colorPrimaryDark"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/background_image"
-                        android:scaleType="matrix"
+                        android:scaleType="centerCrop"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -160,7 +180,7 @@
                     android:translationZ="-8dp"
                     android:alpha="0"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
             <!--home page-->
             <com.factor.launcher.ui.HomePager
@@ -181,21 +201,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent=".8"/>
+                            app:layout_constraintGuide_percent=".8" />
 
                     <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/guideline_arrow_horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            app:layout_constraintGuide_percent=".2"/>
+                            app:layout_constraintGuide_percent=".2" />
 
                     <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/guideline_recent_horizontal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            app:layout_constraintGuide_percent=".92"/>
+                            app:layout_constraintGuide_percent=".92" />
 
                     <!--arrow-->
                     <androidx.appcompat.widget.AppCompatImageButton
@@ -213,28 +233,27 @@
                             android:transitionName="arrow_transition"
                             app:layout_constraintTop_toBottomOf="@id/guideline_arrow_horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="@+id/guideline"/>
+                            app:layout_constraintStart_toStartOf="@+id/guideline" />
 
 
                     <!--recent apps-->
                     <com.factor.bouncy.BouncyRecyclerView
-                                android:translationZ="100dp"
-                                android:contentDescription="@string/recently_used_apps"
-                                app:layout_constraintStart_toStartOf="@id/guideline"
-                                app:layout_constraintBottom_toBottomOf="@id/guideline_recent_horizontal"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:recyclerview_overscroll_animation_size="0.1"
-                                app:recyclerview_fling_animation_size="0.1"
-                                android:id="@+id/recent_apps_list"
-                                android:layout_width="50dp"
-                                android:layout_height="150dp"/>
+                            android:translationZ="100dp"
+                            android:contentDescription="@string/recently_used_apps"
+                            app:layout_constraintStart_toStartOf="@id/guideline"
+                            app:layout_constraintBottom_toBottomOf="@id/guideline_recent_horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:recyclerview_overscroll_animation_size="0.1"
+                            app:recyclerview_fling_animation_size="0.1"
+                            android:id="@+id/recent_apps_list"
+                            android:layout_width="50dp"
+                            android:layout_height="150dp" />
 
 
                     <com.factor.launcher.ui.invisible_refresh_layout.InvisibleRefreshLayout
                             android:id="@+id/swipe_refresh_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
-
 
 
                         <!--layout animation does not work, need new layout manager-->
@@ -246,10 +265,9 @@
                                 app:recyclerview_fling_animation_size="0.3"
                                 app:recyclerview_overscroll_animation_size="0.3"
                                 android:clipToPadding="false"
-                                app:allow_drag_reorder="true"/>
+                                app:allow_drag_reorder="true" />
 
                     </com.factor.launcher.ui.invisible_refresh_layout.InvisibleRefreshLayout>
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -266,7 +284,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/guideline_scroller"
-                            app:layout_constraintGuide_percent="0.9"/>
+                            app:layout_constraintGuide_percent="0.9" />
 
                     <com.factor.indicator_fast_scroll.FastScrollerView
                             android:id="@+id/scroll_bar"
@@ -278,7 +296,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             android:layout_marginEnd="10dp"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent" />
 
 
                     <com.factor.indicator_fast_scroll.FastScrollerThumbView
@@ -287,7 +305,7 @@
                             android:layout_width="50dp"
                             android:layout_marginEnd="10dp"
                             android:layout_height="match_parent"
-                            app:layout_constraintEnd_toStartOf="@id/scroll_bar"/>
+                            app:layout_constraintEnd_toStartOf="@id/scroll_bar" />
 
                     <com.factor.launcher.ui.invisible_refresh_layout.InvisibleRefreshLayout
                             android:id="@+id/drawer_swipe_refresh_layout"
@@ -301,11 +319,9 @@
                                 app:recyclerview_overscroll_animation_size="0.3"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:clipToPadding="false"/>
+                                android:clipToPadding="false" />
 
                     </com.factor.launcher.ui.invisible_refresh_layout.InvisibleRefreshLayout>
-
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
